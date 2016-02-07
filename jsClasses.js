@@ -210,9 +210,22 @@ class OwnerPref {
 	}
 }
 
-var elliottsPreference = new OwnerPref(true, 0);
-elliottsPreference.showPreferences();
-var smallDrum = new Drum(8, elliottsPreference);
-var bigDrum = new Drum(14, elliottsPreference);
-var elliottSet = new DrumSet([bigDrum, smallDrum],'yamaha', elliottsPreference);
-console.log(elliottSet.drums[1])
+// drumsSizes -> array of integers representing the drum sizes
+// topHigher -> boolean, user likes batter higher?
+// resLevel -> int 0 - 3, [low,medium,high,'max']
+// pitchTranspose -> -3 to 3, adjust pitch higher or lower, 0 for no change
+function createTuning(drumSizes, topHigher, resLevel, pitchTranspose , brand) {
+	var brand = brand || "";
+	var pitchTranpose = pitchTranspose || 0;
+	var user = new OwnerPref(topHigher, resLevel);
+	var userDrumObjectArray = [];
+	//shall we create drums inside the drumSet constructor?
+	_.each(drumSizes, function(drumSize) {
+		userDrumObjectArray.push(new Drum(drumSize, user));
+	});
+	var userSet = new DrumSet(userDrumObjectArray, brand, user);
+	console.log(userSet.drums[1]);
+}
+
+createTuning([8,14],true, 0);
+
